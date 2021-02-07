@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Check Status</title>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var refreshData = function () {
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: "http://localhost:8080/v1/amazon-status",
+                        contentType: "application/json; charset=utf-8",
+                        success: successAmazon,
+                        error: function (msg) {
+                            console.log('error ' + msg )
+                        }
+                    })
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: "http://localhost:8080/v1/all-status",
+                        contentType: "application/json; charset=utf-8",
+                        success: successAll,
+                        error: function (msg) {
+                            console.log('error ' + msg )
+                        }
+                    })
+
+                $.ajax(
+                    {
+                        type: 'GET',
+                        url: "http://localhost:8080/v1/google-status",
+                        contentType: "application/json",
+                        success: successGoogle,
+                        error: function (msg) {
+                            console.log('error ' + msg )
+                        }
+                    })
+            };
+            setInterval(refreshData, 3000);
+        });
+
+        function successGoogle(data){
+            $("#googleStatus").val(JSON.stringify(data));
+        }
+        function successAmazon(data) {
+            $("#amazonStatus").val(JSON.stringify(data));
+        }
+        function successAll(data) {
+            $("#allStatus").val(JSON.stringify(data));
+        }
+
+    </script>
+</head>
+<body>
+<h1> Status of Google, Amazon and Both</h1>
+    <br/>
+    <label for="googleStatus">Google Status </label> <textarea id="googleStatus"></textarea>
+    <br/>
+    <label for="amazonStatus">Amazon Status </label><textarea id="amazonStatus"></textarea>
+    <br/>
+    <label for="allStatus">Status of both </label><textarea id="allStatus"></textarea>
+</body>
+</html>
